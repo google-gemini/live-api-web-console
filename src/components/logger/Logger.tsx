@@ -39,6 +39,7 @@ import {
   ToolCallMessage,
   ToolResponseMessage,
 } from "../../multimodal-live-types";
+import EmotionAnalysis from "../emotion-analysis/EmotionAnalysis";
 
 const formatTime = (d: Date) => d.toLocaleTimeString().slice(0, -3);
 
@@ -135,6 +136,7 @@ const ClientContentLog = ({ message }: Message) => {
         </div>
       ))}
       {!turnComplete ? <span>turnComplete: false</span> : ""}
+      <EmotionAnalysis query={turns.map(turn => turn.parts.map(part => part.text).join(' ')).join(' ')} />
     </div>
   );
 };
@@ -199,6 +201,7 @@ const ModelTurnLog = ({ message }: Message): JSX.Element => {
         .map((part, j) => (
           <RenderPart part={part} key={`model-turn-part-${j}`} />
         ))}
+      <EmotionAnalysis query={parts.map(part => part.text).join(' ')} />
     </div>
   );
 };

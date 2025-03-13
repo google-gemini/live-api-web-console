@@ -18,6 +18,7 @@ import { useEffect, useRef, useState, memo } from "react";
 import vegaEmbed from "vega-embed";
 import { useLiveAPIContext } from "../../contexts/LiveAPIContext";
 import { ToolCall } from "../../multimodal-live-types";
+import EmotionAnalysis from "../emotion-analysis/EmotionAnalysis";
 
 const declaration: FunctionDeclaration = {
   name: "render_altair",
@@ -101,7 +102,11 @@ function AltairComponent() {
       vegaEmbed(embedRef.current, JSON.parse(jsonString));
     }
   }, [embedRef, jsonString]);
-  return <div className="vega-embed" ref={embedRef} />;
+  return (
+    <div className="vega-embed" ref={embedRef}>
+      <EmotionAnalysis query={jsonString} />
+    </div>
+  );
 }
 
 export const Altair = memo(AltairComponent);

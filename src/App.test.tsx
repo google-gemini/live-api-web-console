@@ -17,9 +17,26 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import EmotionAnalysis from './components/emotion-analysis/EmotionAnalysis';
 
 test('renders learn react link', () => {
   render(<App />);
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
+});
+
+test('renders EmotionAnalysis component', () => {
+  render(<EmotionAnalysis query="I am happy" />);
+  const analysisElement = screen.getByText(/Emotion Analysis/i);
+  expect(analysisElement).toBeInTheDocument();
+});
+
+test('displays sentiment analysis results', () => {
+  render(<EmotionAnalysis query="I am happy" />);
+  const positiveLabel = screen.getByText(/Positive/i);
+  const negativeLabel = screen.getByText(/Negative/i);
+  const neutralLabel = screen.getByText(/Neutral/i);
+  expect(positiveLabel).toBeInTheDocument();
+  expect(negativeLabel).toBeInTheDocument();
+  expect(neutralLabel).toBeInTheDocument();
 });

@@ -21,6 +21,7 @@ import SidePanel from "./components/side-panel/SidePanel";
 import { Altair } from "./components/altair/Altair";
 import ControlTray from "./components/control-tray/ControlTray";
 import cn from "classnames";
+import EmotionAnalysis from "./components/emotion-analysis/EmotionAnalysis";
 
 const API_KEY = process.env.REACT_APP_GEMINI_API_KEY as string;
 if (typeof API_KEY !== "string") {
@@ -36,6 +37,7 @@ function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   // either the screen capture, the video or null, if null we hide it
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
+  const [query, setQuery] = useState<string>("");
 
   return (
     <div className="App">
@@ -46,6 +48,7 @@ function App() {
             <div className="main-app-area">
               {/* APP goes here */}
               <Altair />
+              <EmotionAnalysis query={query} />
               <video
                 className={cn("stream", {
                   hidden: !videoRef.current || !videoStream,
