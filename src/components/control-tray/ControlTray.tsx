@@ -53,7 +53,7 @@ const MediaStreamButton = memo(
       <button className="action-button" onClick={start}>
         <span className="material-symbols-outlined">{offIcon}</span>
       </button>
-    ),
+    )
 );
 
 function ControlTray({
@@ -83,7 +83,7 @@ function ControlTray({
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--volume",
-      `${Math.max(5, Math.min(inVolume * 200, 8))}px`,
+      `${Math.max(5, Math.min(inVolume * 200, 8))}px`
     );
   }, [inVolume]);
 
@@ -141,6 +141,35 @@ function ControlTray({
       clearTimeout(timeoutId);
     };
   }, [connected, activeVideoStream, client, videoRef]);
+
+  useEffect(() => {
+    if (!activeVideoStream) return;
+
+    const tracks = activeVideoStream.getTracks();
+
+    const handleTrackEnded = (): void => {
+      // Stop all active streams
+      videoStreams.forEach((streamControl) => {
+        if (streamControl.isStreaming) {
+          streamControl.stop();
+        }
+      });
+
+      setActiveVideoStream(null);
+      onVideoStreamChange(null);
+    };
+
+    // Attach listeners to all tracks
+    tracks.forEach((track) => {
+      track.addEventListener("ended", handleTrackEnded);
+    });
+
+    return () => {
+      tracks.forEach((track) => {
+        track.removeEventListener("ended", handleTrackEnded);
+      });
+    };
+  }, [activeVideoStream, onVideoStreamChange, videoStreams]);
 
   //handler for swapping from one video-stream to the next
   const changeStreams = (next?: UseMediaStreamResult) => async () => {
