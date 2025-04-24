@@ -1,0 +1,148 @@
+.canvas {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    height: fit-content;
+}
+
+.device-card {
+    background: var(--Neutral-5);
+    border: 1px solid var(--Neutral-20);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        border-color: var(--Neutral-30);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.device-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--Neutral-10);
+    border-radius: 8px;
+    color: var(--Neutral-90);
+}
+
+.device-info {
+    h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--Neutral-90);
+    }
+
+    p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: var(--Neutral-60);
+    }
+}
+
+.device-status {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+}
+
+.status-toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: var(--Neutral-20);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease-in-out;
+
+    &.on {
+        background: var(--Blue-500);
+
+        .toggle-indicator {
+            transform: translateX(20px);
+        }
+    }
+
+    .toggle-indicator {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--Neutral-5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    &:hover {
+        opacity: 0.9;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.automation-card {
+    background: var(--Neutral-5);
+    border: 1px solid var(--Neutral-20);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.automations-table {
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--Neutral-5);
+        border: 1px solid var(--Neutral-20);
+        border-radius: 8px;
+        overflow: hidden;
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--Neutral-20);
+        }
+
+        th {
+            background: var(--Neutral-10);
+            color: var(--Neutral-90);
+            font-weight: 500;
+        }
+
+        td {
+            color: var(--Neutral-80);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--Neutral-10);
+        }
+    }
+}
