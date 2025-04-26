@@ -64,13 +64,11 @@ export default function SidePanel() {
     };
   }, [client, log]);
 
-  // Helper function to check if input is valid (not empty and not just whitespace)
   const isValidInput = (input: string): boolean => {
     return input.trim().length > 0;
   };
 
   const handleSubmit = () => {
-    // Only send if the input is valid
     if (isValidInput(textInput)) {
       client.send([{ text: textInput }]);
 
@@ -143,7 +141,6 @@ export default function SidePanel() {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 e.stopPropagation();
-                // Only submit if input is valid
                 if (isValidInput(textInput)) {
                   handleSubmit();
                 }
