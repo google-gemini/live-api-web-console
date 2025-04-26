@@ -64,12 +64,20 @@ export default function SidePanel() {
     };
   }, [client, log]);
 
-  const handleSubmit = () => {
-    client.send([{ text: textInput }]);
+  // Helper function to check if input is valid (not empty and not just whitespace)
+  const isValidInput = (input: string): boolean => {
+    return input.trim().length > 0;
+  };
 
-    setTextInput("");
-    if (inputRef.current) {
-      inputRef.current.innerText = "";
+  const handleSubmit = () => {
+    // Only send if the input is valid
+    if (isValidInput(textInput)) {
+      client.send([{ text: textInput }]);
+
+      setTextInput("");
+      if (inputRef.current) {
+        inputRef.current.innerText = "";
+      }
     }
   };
 
@@ -135,7 +143,10 @@ export default function SidePanel() {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 e.stopPropagation();
-                handleSubmit();
+                // Only submit if input is valid
+                if (isValidInput(textInput)) {
+                  handleSubmit();
+                }
               }
             }}
             onChange={(e) => setTextInput(e.target.value)}
@@ -152,6 +163,7 @@ export default function SidePanel() {
           <button
             className="send-button material-symbols-outlined filled"
             onClick={handleSubmit}
+            disabled={!isValidInput(textInput) || !connected}
           >
             send
           </button>
