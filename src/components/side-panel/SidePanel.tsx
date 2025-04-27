@@ -42,6 +42,7 @@ export default function SidePanel() {
     value: string;
     label: string;
   } | null>(null);
+  const [completeTurn, setCompleteTurn] = useState(true);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   //scroll the log to the bottom when new logs come in
@@ -127,6 +128,25 @@ export default function SidePanel() {
         />
       </div>
       <div className={cn("input-container", { disabled: !connected })}>
+        <div className="turn-option">
+          <label>
+            <input
+              type="checkbox"
+              checked={completeTurn}
+              onChange={(e) => setCompleteTurn(e.target.checked)}
+            />
+            <span>Complete turn</span>
+          </label>
+          {client.hasIncompleteTurn() && (
+            <button
+              className="complete-turn-button"
+              onClick={() => client.completeTurn()}
+              title="Force complete the current turn"
+            >
+              Complete turn
+            </button>
+          )}
+        </div>
         <div className="input-content">
           <textarea
             className="input-area"

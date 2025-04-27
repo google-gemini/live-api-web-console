@@ -101,6 +101,37 @@ Project consists of:
 - communication layer for processing audio in and out
 - a boilerplate view for starting to build your apps and view logs
 
+## Handling Context with Incomplete Turns
+
+When working with the Live API, you might want to send contextual text data while continuing to stream real-time input. This is useful when you want to provide additional context to the model without ending the current conversation turn.
+
+### Example: Sending Context Without Completing a Turn
+
+```typescript
+// Send context without completing the turn
+client.sendContext([{ text: "The user is looking at a laptop." }]);
+
+// Continue with real-time input (will force complete the turn if needed)
+client.sendRealtimeInput([
+  {
+    mimeType: "audio/pcm;rate=16000",
+    data: audioData,
+  }
+]);
+
+// Check if there's an incomplete turn
+if (client.hasIncompleteTurn()) {
+  // Manually complete a turn if needed
+  client.completeTurn();
+}
+```
+
+### Differences Between send(), sendContext(), and sendRealtimeInput()
+
+- `send(parts, turnComplete = true)`: Standard method to send text data. By default completes the turn.
+- `sendContext(parts)`: A convenience method that calls `send(parts, false)`. Used when providing context without completing the turn.
+- `sendRealtimeInput(chunks, completeTurn = true)`: Sends real-time media data. The `completeTurn` parameter determines if any incomplete turns should be automatically completed first.
+
 ## Available Scripts
 
 In the project directory, you can run:
