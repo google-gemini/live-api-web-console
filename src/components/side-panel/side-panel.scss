@@ -136,12 +136,45 @@
   }
 
   .input-container {
-    height: 50px;
+    height: 80px;
     flex-grow: 0;
     flex-shrink: 0;
     border-top: 1px solid var(--Neutral-20);
     padding: 14px 25px;
     overflow: hidden;
+
+    .turn-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--Neutral-90);
+      font-size: 12px;
+
+      label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+          margin-right: 5px;
+        }
+      }
+
+      .complete-turn-button {
+        background: var(--Neutral-20);
+        border: none;
+        color: var(--Neutral-90);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        
+        &:hover {
+          background: var(--Neutral-30);
+        }
+      }
+    }
 
     .input-content {
       position: relative;

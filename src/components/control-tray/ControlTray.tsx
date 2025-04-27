@@ -97,7 +97,7 @@ function ControlTray({
           mimeType: "audio/pcm;rate=16000",
           data: base64,
         },
-      ]);
+      ], true);
     };
     if (connected && !muted && audioRecorder) {
       audioRecorder.on("data", onData).on("volume", setInVolume).start();
@@ -131,7 +131,7 @@ function ControlTray({
         ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
         const base64 = canvas.toDataURL("image/jpeg", 1.0);
         const data = base64.slice(base64.indexOf(",") + 1, Infinity);
-        client.sendRealtimeInput([{ mimeType: "image/jpeg", data }]);
+        client.sendRealtimeInput([{ mimeType: "image/jpeg", data }], true);
       }
       if (connected) {
         timeoutId = window.setTimeout(sendVideoFrame, 1000 / 0.5);
