@@ -69,6 +69,8 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
   public ws: WebSocket | null = null;
   protected config: LiveConfig | null = null;
   public url: string = "";
+  private incompleteTurn: boolean = false;
+  
   public getConfig() {
     return { ...this.config };
   }
@@ -198,6 +200,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
       if (isTurnComplete(serverContent)) {
         this.log("server.send", "turnComplete");
         this.emit("turncomplete");
+        this.incompleteTurn = false;
         //plausible theres more to the message, continue
       }
 
@@ -239,7 +242,7 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
   /**
    * send realtimeInput, this is base64 chunks of "audio/pcm" and/or "image/jpg"
    */
-  sendRealtimeInput(chunks: GenerativeContentBlob[]) {
+  sendRealtimeInput(chunks: GenerativeContentBlob[], completeTurn: boolean = true) {
     let hasAudio = false;
     let hasVideo = false;
     for (let i = 0; i < chunks.length; i++) {
@@ -262,6 +265,21 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
         : hasVideo
         ? "video"
         : "unknown";
+
+    // If we're in the middle of a turn that's not complete, send a ClientContentMessage
+    // with turnComplete=true first to close the previous turn
+    if (completeTurn && this.incompleteTurn) {
+      // Force-complete any previous turn by sending an empty ClientContentMessage
+      const completionMessage: ClientContentMessage = {
+        clientContent: {
+          turns: [],
+          turnComplete: true,
+        },
+      };
+      this._sendDirect(completionMessage);
+      this.log(`client.completeTurn`, "completing previous turn");
+      this.incompleteTurn = false;
+    }
 
     const data: RealtimeInputMessage = {
       realtimeInput: {
@@ -303,6 +321,18 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
 
     this._sendDirect(clientContentRequest);
     this.log(`client.send`, clientContentRequest);
+    
+    // Update the incomplete turn state
+    this.incompleteTurn = !turnComplete;
+  }
+
+  /**
+   * Sends contextual text data without completing the turn.
+   * This is useful when you want to provide context to the model
+   * while continuing to stream realtime input.
+   */
+  sendContext(parts: Part | Part[]) {
+    this.send(parts, false);
   }
 
   /**
@@ -315,5 +345,30 @@ export class MultimodalLiveClient extends EventEmitter<MultimodalLiveClientEvent
     }
     const str = JSON.stringify(request);
     this.ws.send(str);
+  }
+
+  /**
+   * Checks if there's an incomplete turn and returns the current state.
+   */
+  hasIncompleteTurn(): boolean {
+    return this.incompleteTurn;
+  }
+
+  /**
+   * Forcibly completes any ongoing turn. Use this if you need to ensure
+   * all incomplete turns are finished before starting something new.
+   */
+  completeTurn(): void {
+    if (this.incompleteTurn) {
+      const completionMessage: ClientContentMessage = {
+        clientContent: {
+          turns: [],
+          turnComplete: true,
+        },
+      };
+      this._sendDirect(completionMessage);
+      this.log(`client.completeTurn`, "manually completing turn");
+      this.incompleteTurn = false;
+    }
   }
 }
