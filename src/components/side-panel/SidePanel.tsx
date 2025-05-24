@@ -44,7 +44,7 @@ export default function SidePanel() {
   } | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  //scroll the log to the bottom when new logs come in
+  // Scroll the log to the bottom when new logs come in
   useEffect(() => {
     if (loggerRef.current) {
       const el = loggerRef.current;
@@ -56,7 +56,7 @@ export default function SidePanel() {
     }
   }, [logs]);
 
-  // listen for log events and store them
+  // Listen for log events and store them
   useEffect(() => {
     client.on("log", log);
     return () => {
@@ -65,11 +65,20 @@ export default function SidePanel() {
   }, [client, log]);
 
   const handleSubmit = () => {
-    client.send([{ text: textInput }]);
+    if (textInput.trim()) {
+      client.send([{ text: textInput }]);
+      setTextInput("");
+      if (inputRef.current) {
+        inputRef.current.value = ""; // Reset the text area
+      }
+    }
+  };
 
-    setTextInput("");
-    if (inputRef.current) {
-      inputRef.current.innerText = "";
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && textInput.trim()) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSubmit();
     }
   };
 
@@ -105,8 +114,8 @@ export default function SidePanel() {
               backgroundColor: isFocused
                 ? "var(--Neutral-30)"
                 : isSelected
-                  ? "var(--Neutral-20)"
-                  : undefined,
+                ? "var(--Neutral-20)"
+                : undefined,
             }),
           }}
           defaultValue={selectedOption}
@@ -122,36 +131,28 @@ export default function SidePanel() {
         </div>
       </section>
       <div className="side-panel-container" ref={loggerRef}>
-        <Logger
-          filter={(selectedOption?.value as LoggerFilterType) || "none"}
-        />
+        <Logger filter={(selectedOption?.value as LoggerFilterType) || "none"} />
       </div>
       <div className={cn("input-container", { disabled: !connected })}>
         <div className="input-content">
           <textarea
             className="input-area"
             ref={inputRef}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                e.stopPropagation();
-                handleSubmit();
-              }
-            }}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setTextInput(e.target.value)}
             value={textInput}
+            placeholder="Type something..."
           ></textarea>
           <span
             className={cn("input-content-placeholder", {
               hidden: textInput.length,
             })}
-          >
-            Type&nbsp;something...
-          </span>
+          ></span>
 
           <button
             className="send-button material-symbols-outlined filled"
             onClick={handleSubmit}
+            disabled={!textInput.trim()} // Disable if textInput is empty
           >
             send
           </button>
