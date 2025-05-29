@@ -1,0 +1,48 @@
+.audioPulse {
+  display: flex;
+  width: 24px;
+  justify-content: space-evenly;
+  align-items: center;
+  transition: all 0.5s;
+  height: 4px; /* Moved from below as it's a property of .audioPulse */
+  transition: opacity 0.333s; /* This will be overridden by 'all 0.5s' but kept for fidelity to original SCSS structure */
+}
+
+.audioPulse > div {
+  background-color: var(--Neutral-30);
+  border-radius: 1000px;
+  width: 4px;
+  min-height: 4px;
+  /* border-radius: 1000px; Duplicate, removed */
+  transition: height 0.1s;
+}
+
+.audioPulse.hover > div {
+  animation: hover 1.4s infinite alternate ease-in-out;
+}
+
+.audioPulse.active {
+  opacity: 1;
+}
+
+.audioPulse.active > div {
+  background-color: var(--Neutral-80);
+}
+
+@keyframes hover {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3.5px);
+  }
+}
+
+@keyframes pulse {
+  from {
+    scale: 1 1;
+  }
+  to {
+    scale: 1.2 1.2;
+  }
+}
