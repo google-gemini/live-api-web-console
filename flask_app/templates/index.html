@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Hello, Python!</h1>
+  {% include "components/logger.html" %}
+  {% include "components/control_tray.html" with connected=initial_connected, muted=initial_muted, supports_video=initial_supports_video, enable_editing_settings=initial_enable_settings, webcam_streaming=initial_webcam_streaming, screen_streaming=initial_screen_streaming %}
+{% endblock %}

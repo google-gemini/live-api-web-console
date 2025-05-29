@@ -1,0 +1,46 @@
+<div class="control-tray"
+  data-connected="{{ 'true' if connected else 'false' }}"
+  data-muted="{{ 'true' if muted else 'false' }}"
+  data-supports-video="{{ 'true' if supports_video else 'false' }}"
+  data-webcam-streaming="{{ 'true' if webcam_streaming else 'false' }}"
+  data-screen-streaming="{{ 'true' if screen_streaming else 'false' }}"
+>
+  <div class="connection-container {% if connected %}connected{% endif %}">
+    <div class="connection-button-container">
+      <button class="action-button connect-toggle {% if connected %}connected{% endif %}" id="connect-button" aria-label="Connect">
+        <span class="material-symbols-outlined">{% if connected %}pause{% else %}play_arrow{% endif %}</span>
+      </button>
+    </div>
+    <span class="text-indicator">{% if connected %}LIVE{% else %}&nbsp;{% endif %}</span>
+  </div>
+
+  <div class="actions-nav">
+    <button class="action-button mic-button {% if muted %}muted{% endif %}" id="mute-button" aria-label="Mute microphone">
+      <span class="material-symbols-outlined">{% if muted %}mic_off{% else %}mic{% endif %}</span>
+    </button>
+
+    {% include "components/audio_pulse.html" %}
+
+    {% if supports_video %}
+      <button class="action-button" id="screenshare-button" aria-label="Share screen" {% if webcam_streaming %}disabled{% endif %}>
+        <span class="material-symbols-outlined">{% if screen_streaming %}cancel_presentation{% else %}present_to_all{% endif %}</span>
+      </button>
+      <button class="action-button" id="webcam-button" aria-label="Toggle webcam" {% if screen_streaming %}disabled{% endif %}>
+        <span class="material-symbols-outlined">{% if webcam_streaming %}videocam_off{% else %}videocam{% endif %}</span>
+      </button>
+    {% endif %}
+
+    {% if enable_editing_settings %}
+      <button id="settings-dialog-toggle" class="action-button outlined" aria-label="Open settings">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+    {% endif %}
+  </div>
+
+  {# Settings Dialog is included outside of actions-nav but within control-tray #}
+  {% if enable_editing_settings %}
+    {% include "components/settings_dialog.html" with connected=connected, system_instruction_text=initial_system_instruction, function_declarations=initial_function_declarations, response_modalities=initial_response_modalities, voices=initial_voices, selected_voice=initial_selected_voice, selected_modality=initial_selected_modality %}
+  {% endif %}
+
+  <canvas id="renderCanvasControlTray" style="display: none;"></canvas>
+</div>

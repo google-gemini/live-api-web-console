@@ -1,0 +1,65 @@
+<dialog class="dialog" id="settings-dialog-element">
+  <div class="dialog-container">
+    {% if connected %}
+      <div class="connected-indicator">
+        <p>Settings are disabled while connected.</p>
+      </div>
+    {% endif %}
+
+    <h4>Settings</h4>
+
+    <div class="select-group">
+      <label for="response-modality">Response modality</label>
+      <select id="response-modality" name="response_modality">
+        {% for modality in response_modalities %}
+          <option value="{{ modality }}" {% if modality == selected_modality %}selected{% endif %}>{{ modality }}</option>
+        {% else %}
+          <option value="audio">audio</option>
+          <option value="text">text</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="select-group">
+      <label for="voice-selector">Voice</label>
+      <select id="voice-selector" name="voice">
+        {% for voice in voices %}
+          <option value="{{ voice }}" {% if voice == selected_voice %}selected{% endif %}>{{ voice }}</option>
+        {% else %}
+          <option value="Puck">Puck</option>
+          <option value="BayMax">BayMax</option> {# Example other voices #}
+          <option value="GLaDOS">GLaDOS</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <h3>System Instructions</h3>
+    <textarea id="system-instructions" class="system">{{ system_instruction_text }}</textarea>
+
+    <h4>Function declarations</h4>
+    <div class="function-declarations">
+      <div class="fd-rows">
+        {% for func in function_declarations %}
+          <div class="fd-row">
+            <span class="fd-row-name">{{ func.name }}</span>
+            <span class="fd-row-args">
+              {% for arg in func.args %}
+                <span class="inline-code">{{ arg }}</span>
+              {% endfor %}
+            </span>
+            <input type="text" class="fd-row-description" value="{{ func.description }}" data-func-name="{{ func.name }}">
+          </div>
+        {% else %}
+          <div class="fd-row">
+            <span class="fd-row-name">sample_function</span>
+            <span class="fd-row-args"><span class="inline-code">param1</span><span class="inline-code">param2</span></span>
+            <input type="text" class="fd-row-description" value="This is a sample function." data-func-name="sample_function">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <button id="settings-dialog-close-button" class="action-button" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; cursor: pointer;">
+        <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+</dialog>

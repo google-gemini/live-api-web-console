@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
+      rel="stylesheet"
+    />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo192.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/audio-pulse.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/control-tray.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/settings-dialog.css') }}">
+    <title>Multimodal Live - Console</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">{% block content %}{% endblock %}</div>
+    <script src="{{ url_for('static', filename='js/audio-pulse.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/control-tray.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/settings-dialog.js') }}"></script>
+  </body>
+</html>
