@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Hello, Python!</h1>
-  {% include "components/logger.html" %}
-  {% include "components/control_tray.html" with connected=initial_connected, muted=initial_muted, supports_video=initial_supports_video, enable_editing_settings=initial_enable_settings, webcam_streaming=initial_webcam_streaming, screen_streaming=initial_screen_streaming %}
+  {# Side Panel should ideally be part of base layout, but included here per instructions #}
+  {% include "components/side_panel.html" with initial_side_panel_open=initial_side_panel_open, logs=logs, current_log_filter=current_log_filter, connected=initial_connected %}
+
+  <div class="main-content-area" id="main-content-area" style="padding-left: {% if initial_side_panel_open %}400px{% else %}40px{% endif %}; transition: padding-left 0.2s ease-in;">
+    <h1>Hello, Python!</h1>
+    <video id="main-video" autoplay muted style="width: 320px; height: 240px; border: 1px solid black; display: none; margin-bottom: 10px;"></video>
+    {% include "components/control_tray.html" with connected=initial_connected, muted=initial_muted, supports_video=initial_supports_video, enable_editing_settings=initial_enable_settings, webcam_streaming=initial_webcam_streaming, screen_streaming=initial_screen_streaming %}
+  </div>
 {% endblock %}

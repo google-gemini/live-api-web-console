@@ -24,13 +24,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/audio-pulse.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/control-tray.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/settings-dialog.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/side-panel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/react-select-sidepanel.css') }}">
     <title>Multimodal Live - Console</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">{% block content %}{% endblock %}</div>
+    {# Core utilities and services first #}
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audio_streamer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/live_api_client.js') }}"></script>
+
+    {# Device handlers #}
+    <script src="{{ url_for('static', filename='js/audio_handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/video_handler.js') }}"></script>
+
+    {# UI Components - order might matter if they depend on each other or on handlers #}
     <script src="{{ url_for('static', filename='js/audio-pulse.js') }}"></script>
     <script src="{{ url_for('static', filename='js/control-tray.js') }}"></script>
     <script src="{{ url_for('static', filename='js/settings-dialog.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/side-panel.js') }}"></script>
   </body>
 </html>

@@ -1,1 +1,6 @@
 Flask
+python-dotenv
+pytest
+flake8
+pylint
+black

@@ -108,4 +108,33 @@ document.addEventListener('DOMContentLoaded', () => {
       window.setSettingsDialogDisabled(false);
   }
 
+  // --- Function to get current settings ---
+  window.settingsDialogGetCurrentConfig = function() {
+    const functionDeclarations = [];
+    const fdRows = settingsDialogElement.querySelectorAll('.fd-row');
+    fdRows.forEach(row => {
+      const nameElement = row.querySelector('.fd-row-name');
+      const argsElements = row.querySelectorAll('.fd-row-args .inline-code');
+      const descriptionElement = row.querySelector('.fd-row-description');
+      
+      if (nameElement && descriptionElement) {
+        const args = [];
+        argsElements.forEach(argEl => args.push(argEl.textContent.trim()));
+        functionDeclarations.push({
+          name: nameElement.textContent.trim(),
+          args: args,
+          description: descriptionElement.value.trim()
+        });
+      }
+    });
+
+    return {
+      responseModality: responseModalitySelect ? responseModalitySelect.value : 'audio',
+      voice: voiceSelectorSelect ? voiceSelectorSelect.value : 'Puck',
+      systemInstruction: systemInstructionsTextarea ? systemInstructionsTextarea.value : '',
+      functionDeclarations: functionDeclarations
+    };
+  };
+  console.log("settingsDialogGetCurrentConfig function is now available globally.");
+
 });

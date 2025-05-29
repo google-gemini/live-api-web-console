@@ -1,0 +1,52 @@
+/* Styles for react-select component, adapted for side panel usage */
+.react-select-sidepanel-container .react-select__control { /* Assuming a wrapper class for specificity */
+  background: var(--Neutral-20);
+  color: var(--Neutral-90);
+  width: 193px; /* From original .react-select */
+  height: 30px; /* From original .react-select */
+  border: 1px solid var(--Neutral-30); /* Added for better visibility */
+  border-radius: 4px; /* Added for consistency */
+  min-height: 30px; /* Ensure height is applied */
+}
+
+.react-select-sidepanel-container .react-select__single-value {
+  color: var(--Neutral-90);
+}
+
+.react-select-sidepanel-container .react-select__menu {
+  background: var(--Neutral-20);
+  color: var(--Neutral-90);
+  width: 193px; /* Match control width */
+}
+
+.react-select-sidepanel-container .react-select__option {
+  /* Basic option styling */
+  padding: 8px 12px;
+}
+
+.react-select-sidepanel-container .react-select__value-container {
+  /* Adjust padding if necessary */
+  padding: 0 8px;
+  height: 100%;
+}
+
+.react-select-sidepanel-container .react-select__indicators {
+  /* Style for dropdown indicators */
+}
+.react-select-sidepanel-container .react-select__indicator-separator {
+    display: none; /* Hide default separator */
+}
+.react-select-sidepanel-container .react-select__dropdown-indicator {
+    padding: 6px; /* Adjust padding */
+}
+
+
+.react-select-sidepanel-container .react-select__option:hover,
+.react-select-sidepanel-container .react-select__option--is-focused { /* Combined selectors */
+  background: var(--Neutral-30);
+}
+
+/* Note: .react-select_option:focus-within was likely a typo for .react-select__option:focus-within 
+   or meant to be covered by .react-select__option--is-focused.
+   If specific focus-within styling is needed, it can be added.
+*/
