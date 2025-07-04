@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-rl-background text-rl-on-surface antialiased;
+  font-family: 'Assistant', sans-serif;
+  direction: rtl; /* Set RTL globally */
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1E293B; /* rl-surface */
+}
+::-webkit-scrollbar-thumb {
+  background: #334155; /* rl-secondary */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* A slightly lighter secondary */
+}
