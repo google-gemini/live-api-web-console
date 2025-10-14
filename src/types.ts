@@ -22,9 +22,9 @@ import {
 } from "@google/genai";
 
 /**
- * the options to initiate the client, ensure apiKey is required
+ * The options to initiate the client, supporting either API key or Vertex AI.
  */
-export type LiveClientOptions = GoogleGenAIOptions & { apiKey: string };
+export type LiveClientOptions = GoogleGenAIOptions;
 
 /** log types */
 export type StreamingLog = {

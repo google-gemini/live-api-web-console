@@ -24,13 +24,37 @@ import cn from "classnames";
 import { LiveClientOptions } from "./types";
 
 const API_KEY = process.env.REACT_APP_GEMINI_API_KEY as string;
-if (typeof API_KEY !== "string") {
-  throw new Error("set REACT_APP_GEMINI_API_KEY in .env");
+const USE_VERTEX_AI = process.env.REACT_APP_USE_VERTEX_AI === 'true';
+const PROJECT_ID = process.env.REACT_APP_GOOGLE_CLOUD_PROJECT as string;
+const LOCATION = process.env.REACT_APP_GOOGLE_CLOUD_LOCATION as string;
+
+
+function createApiOptions(): LiveClientOptions {
+  if (USE_VERTEX_AI) {
+    // Vertex AI configuration (supports WIF)
+    if (!PROJECT_ID || !LOCATION) {
+      throw new Error(
+        "When using Vertex AI, set REACT_APP_GOOGLE_CLOUD_PROJECT and REACT_APP_GOOGLE_CLOUD_LOCATION in .env"
+      );
+    }
+    
+    return {
+      vertexai: true,
+      project: PROJECT_ID,
+      location: LOCATION,
+    };
+  } else {
+    if (!API_KEY) {
+      throw new Error("set REACT_APP_GEMINI_API_KEY in .env");
+    }
+    
+    return {
+      apiKey: API_KEY,
+    };
+  }
 }
 
-const apiOptions: LiveClientOptions = {
-  apiKey: API_KEY,
-};
+const apiOptions: LiveClientOptions = createApiOptions();
 
 function App() {
   // this video reference is used for displaying the active stream, whether that is the webcam or screen capture
