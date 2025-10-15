@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "RescuerLens – UI schema (RTL, dark mode) בהתאם לעיצוב המעודכן המוצג בתמונה",
+    "lastUpdated": "2025-07-04T09:00:00Z"
+  },
+  "theme": {
+    "mode": "dark",
+    "primary": "#3B82F6",
+    "secondary": "#334155",
+    "success": "#16A34A",
+    "warning": "#D97706",
+    "critical": "#DC2626",
+    "background": "#0F172A",
+    "surface": "#1E293B",
+    "onPrimary": "#FFFFFF",
+    "onSurface": "#E2E8F0",
+    "borderRadius": "8px",
+    "fontFamily": "Assistant, sans-serif"
+  },
+  "layout": {
+    "type": "grid",
+    "desktop": {
+      "columns": "280px 1fr",
+      "rows": "auto 1fr",
+      "areas": {
+        "header": "header header",
+        "sidebar": "sidebar main",
+        "main": "sidebar main"
+      },
+      "templateAreas": [
+        ["header", "header"],
+        ["sidebar", "main"]
+      ],
+      "templateRows": "auto 1fr",
+      "templateColumns": "280px 1fr"
+    },
+    "mobile": {
+      "columns": "1fr",
+      "rows": "auto auto 1fr auto",
+      "areas": {
+        "header": "header",
+        "main": "main",
+        "sidebar": "sidebar",
+        "fab": "fab"
+      },
+      "templateAreas": [
+        ["header"],
+        ["main"],
+        ["fab"]
+      ],
+      "templateRows": "auto 1fr auto",
+      "templateColumns": "1fr"
+    }
+  },
+  "components": [
+    {
+      "id": "headerBar",
+      "type": "AppBar",
+      "area": "header",
+      "props": {
+        "logoText": "RescuerLens",
+        "avatar": true,
+        "connectionStatus": true,
+        "rtl": true
+      }
+    },
+    {
+      "id": "videoFeed",
+      "type": "LivePlayer",
+      "area": "main",
+      "props": {
+        "overlayTips": true,
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "id": "cameraBtn",
+      "type": "ActionButton",
+      "area": "main",
+      "props": {
+        "label": "פתח מצלמה",
+        "icon": "camera",
+        "variant": "primary",
+        "size": "lg",
+        "isFab": true
+      }
+    },
+    {
+      "id": "screenBtn",
+      "type": "ActionButton",
+      "area": "main",
+      "props": {
+        "label": "שתף מסך",
+        "icon": "desktop",
+        "variant": "secondary",
+        "size": "lg",
+        "isFab": true
+      }
+    },
+    {
+      "id": "alertStatusCard",
+      "type": "StatusCard",
+      "area": "sidebar",
+      "props": {
+        "title": "מצב התרעות",
+        "counters": [
+          { "label": "בטוח", "count": 0, "color": "success" },
+          { "label": "אזהרה", "count": 0, "color": "warning" },
+          { "label": "קריטי", "count": 0, "color": "critical" }
+        ]
+      }
+    },
+    {
+      "id": "alertList",
+      "type": "ScrollableList",
+      "area": "sidebar",
+      "props": {
+        "title": "התרעות חיות",
+        "emptyState": "אין התרעות פעילות",
+        "items": []
+      }
+    },
+    {
+      "id": "audioToggle",
+      "type": "ToggleSwitch",
+      "area": "sidebar",
+      "props": {
+        "label": "הנחיות קוליות",
+        "state": false
+      }
+    },
+    {
+      "id": "reportChannels",
+      "type": "OptionList",
+      "area": "sidebar",
+      "props": {
+        "title": "ערוצי דיווח",
+        "options": [
+          { "id": "email", "label": "Email", "enabled": true, "icon": "email" },
+          { "id": "whatsapp", "label": "WhatsApp", "enabled": true, "icon": "whatsapp" },
+          { "id": "telegram", "label": "Telegram", "enabled": false, "icon": "telegram" },
+          { "id": "sms", "label": "SMS", "enabled": false, "icon": "sms" }
+        ],
+        "sliders": true
+      }
+    },
+    {
+      "id": "systemCheckBtn",
+      "type": "Button",
+      "area": "sidebar",
+      "props": {
+        "label": "בדיקת מערכת",
+        "variant": "outlined"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "name": "openCamera",
+      "componentId": "cameraBtn",
+      "callback": "openCamera()"
+    },
+    {
+      "name": "startScreenShare",
+      "componentId": "screenBtn",
+      "callback": "startScreenShare()"
+    },
+    {
+      "name": "toggleAudioAlerts",
+      "componentId": "audioToggle",
+      "callback": "toggleAudioAlerts()"
+    },
+    {
+      "name": "toggleReportChannel",
+      "componentId": "reportChannels",
+      "callback": "toggleChannel(channelId, enabled)"
+    },
+    {
+      "name": "runSystemCheck",
+      "componentId": "systemCheckBtn",
+      "callback": "runSystemCheck()"
+    }
+  ]
+}
