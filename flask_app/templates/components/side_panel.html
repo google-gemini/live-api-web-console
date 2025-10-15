@@ -1,0 +1,45 @@
+<div class="side-panel {% if initial_side_panel_open %}open{% endif %}" id="side-panel">
+  <div class="top">
+    <h2 id="side-panel-title">Console</h2>
+    {# Toggle buttons - using material icons for open/close for better visuals #}
+    <button id="side-panel-close-button" class="opener" aria-label="Close side panel">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+    <button id="side-panel-open-button" class="opener" aria-label="Open side panel" style="display: none;">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+
+  <div class="indicators">
+    {# Using a standard select for now, will apply react-select-sidepanel-container class for styling if needed #}
+    <div class="react-select-sidepanel-container">
+      <select id="log-filter-select" class="react-select__control" name="log_filter">
+        <option value="none" {% if current_log_filter == 'none' %}selected{% endif %}>All Logs</option>
+        <option value="conversations" {% if current_log_filter == 'conversations' %}selected{% endif %}>Conversations</option>
+        <option value="tools" {% if current_log_filter == 'tools' %}selected{% endif %}>Tool Use</option>
+      </select>
+    </div>
+    <button id="clear-logs-button" class="action-button outlined" title="Clear Logs" style="height: 30px; width: 30px; padding: 0; font-size: 18px; border-radius: 4px; background: var(--Neutral-10); border: 1px solid var(--Neutral-20);">
+      <span class="material-symbols-outlined">delete_sweep</span>
+    </button>
+    <div id="streaming-indicator-sidedisplay" class="streaming-indicator {% if connected %}connected{% endif %}">
+      <span class="indicator-icon">{% if connected %}🔵{% else %}⏸️{% endif %}</span>
+      <span class="indicator-text">{% if connected %}Streaming{% else %}Paused{% endif %}</span>
+    </div>
+  </div>
+
+  <div class="side-panel-container" id="side-panel-logger-container">
+    {# Assuming logger.html can handle a filter variable, or this needs adjustment #}
+    {% include "components/logger.html" with logs=logs, filter=current_log_filter %}
+  </div>
+
+  <div class="input-container {% if not connected %}disabled{% endif %}" id="side-panel-input-container">
+    <div class="input-content">
+      <textarea id="side-panel-input-area" class="input-area" placeholder="Type a message..." rows="1"></textarea>
+      <span class="input-content-placeholder" style="display: none;">Type a message...</span>
+      <button id="side-panel-send-button" class="send-button" aria-label="Send message" {% if not connected %}disabled{% endif %}>
+        <span class="material-symbols-outlined">send</span>
+      </button>
+    </div>
+  </div>
+</div>

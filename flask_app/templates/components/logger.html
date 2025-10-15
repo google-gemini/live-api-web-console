@@ -1,0 +1,16 @@
+{% import "components/_log_macros.html" as log_macros with context %}
+
+<div class="logger">
+  <ul class="logger-list">
+    {% for log in logs %}
+      <li class="plain-log source-{{ log.type.split('.')[0] }}{% if 'receive' in log.type %} receive{% endif %}{% if 'send' in log.type %} send{% endif %}">
+        <span class="timestamp">{{ log.date.strftime('%H:%M') }}</span>
+        <span class="source">{{ log.type }}</span>
+        <span class="message">{{ log_macros.render_log_message(log.message) }}</span>
+        {% if log.count is defined and log.count is not none %}
+          <span class="count">{{ log.count }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

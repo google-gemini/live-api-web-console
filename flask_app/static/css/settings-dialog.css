@@ -1,0 +1,180 @@
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 70px;
+}
+
+.select-group > label {
+  font-size: 10px;
+}
+
+.settings-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 70px; /* This height seems specific to the button container, not the dialog itself */
+}
+
+.settings-dialog .connected-indicator {
+  font-style: italic;
+}
+
+/*
+.settings-dialog .connected-indicator {
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: var(--Neutral-5);
+    opacity: 0.85;
+  }
+  z-index: 1;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--Neutral-80);
+}
+
+.settings-dialog .connected-indicator p {
+  z-index: 1;
+}
+*/
+
+.settings-dialog h4 {
+  margin-left: 4px;
+  margin-bottom: 10px;
+}
+
+.settings-dialog button { /* General button style within settings-dialog, may need more specific selectors */
+  background: none;
+  border: 0;
+}
+
+.settings-dialog .dialog {
+  font-family: "Space mono";
+  background: var(--Neutral-5);
+  border-radius: 18px;
+  color: var(--Neutral-80);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  /* top: -400px; Changed to make it appear for now */
+  top: 50%; 
+  left: 50%;
+  /* right: 0; */
+  width: 696px;
+  /* height: 593px; Let height be auto based on content or set a max-height */
+  max-height: 90vh; /* Example max-height */
+  transform: translate(-50%, -50%);
+  display: none; /* Initially hidden */
+  z-index: 100; /* Ensure it's above other elements */
+}
+
+.settings-dialog .dialog.open {
+    display: block; /* Or flex, grid depending on inner layout */
+}
+
+
+.settings-dialog .dialog-container {
+  box-sizing: border-box;
+  padding: 32px;
+  max-height: calc(90vh - 64px); /* Adjust based on padding */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.settings-dialog .small {
+  font-size: 80%;
+}
+
+.settings-dialog .mode-selectors {
+  display: flex;
+  gap: 1rem;
+  padding: 8px 0;
+}
+
+.settings-dialog textarea.system {
+  border-radius: 12px;
+  background-color: var(--Neutral-15);
+  color: var(--Neutral-80);
+  margin-top: 8px;
+  font-family: Google Sans, sans-serif;
+  line-height: 21px;
+  font-size: 16px;
+  /* field-sizing: content; Not a standard CSS property */
+  width: calc(100% - 16px);
+  min-height: 150px;
+  height: 150px;
+  padding: 8px;
+  border: 0;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.settings-dialog .function-declarations {
+  font-size: 66%;
+  width: 100%;
+}
+
+.settings-dialog .fd-rows {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 1.5fr;
+  row-gap: 6px;
+}
+
+.settings-dialog .fd-row-name {
+  font-family: "Space mono";
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--Blue-400);
+  /* font-weight: bold; Duplicated */
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-20, #2a2f31);
+  padding: 10px;
+}
+
+.settings-dialog .fd-row-args {
+  padding: 12px;
+}
+
+.settings-dialog .fd-row-args > *:not(:last-child)::after {
+  content: ", ";
+}
+
+.settings-dialog .fd-row {
+  display: contents;
+  color: var(--Neutral-70);
+  align-items: center;
+  height: 35px;
+}
+
+.settings-dialog .fd-row-description {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  padding: 2px 4px;
+}
+
+.settings-dialog .fd-row-description:hover,
+.settings-dialog .fd-row-description:focus {
+  background: var(--Neutral-20);
+  outline: none;
+}

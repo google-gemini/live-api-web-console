@@ -1,0 +1,270 @@
+.side-panel {
+  background: var(--Neutral-00);
+  width: 40px; /* when closed */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: all 0.2s ease-in;
+  font-family: Arial, sans-serif; /* Fallback, actual font-family is var(--font-family) */
+  border-right: 1px solid var(--gray-600);
+  color: var(--Neutral-90, #e1e2e3);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%; /* 20.8px */
+}
+
+.side-panel .hidden {
+  display: none !important;
+}
+
+.side-panel.open .top h2 {
+  left: 0%;
+  display: block;
+  opacity: 1;
+}
+
+.side-panel .top {
+  display: flex;
+  /* width: calc(100% - 45px); Potentially problematic when panel is 40px */
+  width: 100%; 
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px 12px 25px;
+  border-bottom: 1px solid var(--Neutral-20);
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.side-panel .top h2 {
+  position: relative;
+  color: var(--Neutral-90, #e1e2e3);
+  font-family: "Google Sans";
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; /* 100% */
+  opacity: 0;
+  display: none;
+  left: -100%;
+  transition: opacity 0.2s ease-in, left 0.2s ease-in, display 0.2s ease-in;
+  /* transition-behavior: allow-discrete; This is a new property, might not be fully supported */
+}
+
+/* @starting-style for .side-panel .top h2 - This is very new CSS. 
+   It might be better to handle this with JS if browser support is a concern.
+   For now, translated as is. */
+@starting-style {
+  .side-panel .top h2 {
+    left: 0%;
+    opacity: 1;
+  }
+}
+
+.side-panel .opener { /* This selector seems to be for the toggle button */
+  height: 30px;
+  transition: transform 0.2s ease-in;
+  /* Example styles for a button, adjust as needed */
+  background: transparent;
+  border: none;
+  color: var(--Neutral-90);
+  cursor: pointer;
+  padding: 0;
+  margin: 0 5px; /* Adjust margin if needed */
+}
+
+.side-panel:not(.open) .side-panel-container {
+  opacity: 0;
+  display: none;
+  transition: all 0.2s ease-in; /* allow-discrete might not be needed here */
+  transition-delay: 0.1s;
+}
+
+.side-panel:not(.open) .indicators .streaming-indicator {
+  width: 30px; /* Or just hide text content */
+  opacity: 0; /* Text part could be hidden */
+}
+
+.side-panel:not(.open) .opener {
+  /* transform: translate(-50%, 0); This might be for centering the button if its parent is the side-panel itself */
+  /* If .opener is inside .top, this might not be needed, or needs adjustment */
+}
+
+.side-panel:not(.open) .input-container {
+  opacity: 0;
+  display: none;
+  transition: all 0.2s ease-in;
+}
+
+.side-panel .indicators {
+  display: flex;
+  padding: 24px 25px;
+  justify-content: flex-end;
+  gap: 21px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.side-panel .indicators .streaming-indicator {
+  user-select: none;
+  border-radius: 4px;
+  border: 1px solid var(--Neutral-20, #2a2f31);
+  background: var(--Neutral-10, #1c1f21);
+  display: flex;
+  width: 136px;
+  height: 30px;
+  padding-left: 4px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: "Space Mono";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transition: width 0.2s ease-in, opacity 0.2s ease-in; /* Added opacity transition */
+}
+
+.side-panel .indicators .streaming-indicator.connected {
+  color: var(--Blue-500, #0d9c53); /* Original SCSS had #0d9c53, but used var(--Blue-500) elsewhere */
+}
+
+.side-panel .side-panel-container {
+  /* align-self: flex-end; This would make it stick to the bottom if flex-direction is column */
+  width: 100%; /* Should take full width of the panel */
+  box-sizing: border-box;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* scrollbar-gutter: stable both-edges; */
+}
+
+.side-panel .input-container {
+  height: 50px; /* Fixed height */
+  box-sizing: border-box;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-top: 1px solid var(--Neutral-20);
+  padding: 14px 25px;
+  overflow: hidden;
+  background: var(--Neutral-00); /* Ensure it has a background */
+}
+
+.side-panel .input-container .input-content {
+  position: relative;
+  background: var(--Neutral-10);
+  border: 1px solid var(--Neutral-15);
+  height: 22px; /* Fixed height for the content area */
+  border-radius: 10px;
+  padding: 11px 18px; /* Padding around the textarea and button */
+  display: flex; /* To align textarea and button */
+  align-items: center;
+}
+
+.side-panel .input-container .send-button {
+  /* position: absolute; top: 50%; right: 0; transform: translate(0, -50%); Removed for flex alignment */
+  background: none;
+  border: 0;
+  color: var(--Neutral-20);
+  cursor: pointer;
+  transition: color 0.1s ease-in;
+  z-index: 2;
+  padding: 0; /* Remove default padding */
+  margin-left: 10px; /* Space between textarea and button */
+}
+
+.side-panel .input-container .send-button:hover {
+  color: var(--Neutral-60);
+}
+
+.side-panel .input-container .input-area {
+  background: none;
+  color: var(--Neutral-90);
+  /* field-sizing: content; Non-standard, commented out */
+  /* position: absolute; top: 0; left: 0; z-index: 2; display: inline-block; Removed for flex alignment */
+  width: calc(100% - 40px); /* Adjust width based on send button and padding */
+  max-height: 20px; /* Max height before scroll, or use line-height */
+  outline: none;
+  /* --webkit-box-flex: 1; flex: 1; word-break: break-word; Removed for flex alignment */
+  flex-grow: 1; /* Allow textarea to take available space */
+  overflow: auto; /* Should be 'auto' or 'hidden' based on desired behavior */
+  padding: 0; /* Padding is on input-content now */
+  border: 0;
+  resize: none;
+  line-height: 20px; /* Match max-height */
+}
+
+.side-panel .input-container .input-content-placeholder {
+  position: absolute;
+  left: 18px; /* Match input-content padding */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 0; /* Behind textarea */
+  height: 100%;
+  width: calc(100% - 36px); /* Match input-content padding */
+  pointer-events: none;
+  user-select: none;
+  /* padding: 0px 18px; Redundant with left and width */
+  white-space: pre-wrap; /* Or pre */
+  color: var(--Neutral-60); /* Example placeholder color */
+}
+
+.side-panel.open {
+  width: 400px;
+  height: 100vh;
+}
+
+/* These were outside .side-panel in SCSS, assuming they are general utility or part of logger */
+.side-panel-responses,
+.side-panel-requests {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  display: block;
+  /* margin-left: 8px; This might be specific to where logger is used */
+}
+
+/* .top styles were duplicated in SCSS, ensuring they are applied correctly.
+   The .side-panel .top has higher specificity and should be fine. */
+.top button { /* General button style if used outside .side-panel .opener */
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  padding: 4px;
+  color: var(--Neutral-90); /* Ensure button is visible */
+}
+
+/* Styles for select element in indicators */
+.side-panel .indicators select {
+    background: var(--Neutral-20);
+    color: var(--Neutral-90);
+    border: 1px solid var(--Neutral-30);
+    border-radius: 4px;
+    padding: 5px;
+    height: 30px; /* Match streaming indicator height */
+    font-family: var(--font-family);
+    font-size: 13px;
+}
+
+/* Styles for input-container when disabled */
+.side-panel .input-container.disabled {
+    background-color: var(--Neutral-10); /* Slightly different background */
+}
+.side-panel .input-container.disabled .input-area {
+    background-color: var(--Neutral-15);
+    color: var(--Neutral-50);
+    cursor: not-allowed;
+}
+.side-panel .input-container.disabled .send-button {
+    color: var(--Neutral-30);
+    cursor: not-allowed;
+    pointer-events: none;
+}

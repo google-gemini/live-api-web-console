@@ -1,0 +1,74 @@
+{% macro render_part(part) %}
+  {% if part.text is defined %}
+    <p class="part part-text">{{ part.text }}</p>
+  {% elif part.executableCode is defined %}
+    <div class="part part-executableCode">
+      <h5>executableCode: {{ part.executableCode.language }}</h5>
+      <pre>{{ part.executableCode.code }}</pre>
+    </div>
+  {% elif part.codeExecutionResult is defined %}
+    <div class="part part-codeExecutionResult">
+      <h5>codeExecutionResult: {{ part.codeExecutionResult.outcome }}</h5>
+      <pre>{{ part.codeExecutionResult.output }}</pre>
+    </div>
+  {% elif part.inlineData is defined %}
+    <div class="part part-inlinedata">Inline Data: {{ part.inlineData.mimeType }}</div>
+  {% else %}
+    <div class="part part-unknown">&nbsp;</div>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_log_message(log_message) %}
+  {% if log_message is string %}
+    <span>{{ log_message }}</span>
+  {% elif log_message is mapping %}
+    {% if 'turns' in log_message and 'turnComplete' in log_message %}
+      <div class="rich-log client-content user">
+        <h4 class="roler-user">User</h4>
+        {% for part_item in log_message.turns %}
+          {{ render_part(part_item) }}
+        {% endfor %}
+        {% if not log_message.turnComplete %}
+          <p>turnComplete: false</p>
+        {% endif %}
+      </div>
+    {% elif 'toolCall' in log_message %}
+      <div class="rich-log tool-call">
+        {% for call in log_message.toolCall.functionCalls %}
+          <h5>Function call: {{ call.name }}</h5>
+          <pre>{{ call.args | tojson(indent=2) }}</pre>
+        {% endfor %}
+      </div>
+    {% elif 'toolCallCancellation' in log_message %}
+      <div class="rich-log tool-call-cancellation">
+        ids: {{ log_message.toolCallCancellation.ids | join(', ') }}
+      </div>
+    {% elif 'functionResponses' in log_message %}
+      <div class="rich-log tool-response">
+        {% for response in log_message.functionResponses %}
+          <h5>Function Response: {{ response.id }}</h5>
+          <pre>{{ response.response | tojson(indent=2) }}</pre>
+        {% endfor %}
+      </div>
+    {% elif 'serverContent' in log_message %}
+      {% if log_message.serverContent.interrupted %}
+        <span>interrupted</span>
+      {% elif log_message.serverContent.turnComplete %}
+        <span>turnComplete</span>
+      {% elif log_message.serverContent.modelTurn is defined %}
+        <div class="rich-log model-turn model">
+          <h4 class="role-model">Model</h4>
+          {% for part_item in log_message.serverContent.modelTurn.parts %}
+            {{ render_part(part_item) }}
+          {% endfor %}
+        </div>
+      {% else %}
+        <pre>{{ log_message | tojson(indent=2) }}</pre>
+      {% endif %}
+    {% else %}
+      <pre>{{ log_message | tojson(indent=2) }}</pre>
+    {% endif %}
+  {% else %}
+    <span>Invalid log message format</span>
+  {% endif %}
+{% endmacro %}
