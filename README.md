@@ -27,6 +27,33 @@ Original demos:
 - [demos/GenWeather](https://github.com/google-gemini/multimodal-live-api-web-console/tree/demos/genweather)
 - [demos/GenList](https://github.com/google-gemini/multimodal-live-api-web-console/tree/demos/genlist)
 
+## Troubleshooting
+
+If you encounter dependency issues during installation, ensure you're using the latest version from the `main` branch. Common issues include:
+
+### `react-scripts` not found
+
+If you see an error like `'react-scripts' is not recognized as an internal or external command`, verify that `react-scripts` is set to version `5.0.1` or higher in `package.json`:
+
+```json
+"react-scripts": "5.0.1"
+```
+
+### `react-syntax-highlighter` module errors
+
+If you encounter errors like `Module not found: Error: Can't resolve 'react-syntax-highlighter/dist/esm/styles/hljs'`, ensure the package version is `15.5.0` or higher:
+
+```json
+"react-syntax-highlighter": "^15.6.1"
+```
+
+After verifying your `package.json`, run:
+
+```bash
+npm install
+npm start
+```
+
 ## Example
 
 Below is an example of an entire application that will use Google Search grounding and then render graphs using [vega-embed](https://github.com/vega/vega-embed):
