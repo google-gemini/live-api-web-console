@@ -22,9 +22,28 @@ import {
 } from "@google/genai";
 
 /**
- * the options to initiate the client, ensure apiKey is required
+ * Options for direct API key mode
  */
-export type LiveClientOptions = GoogleGenAIOptions & { apiKey: string };
+export type ApiKeyClientOptions = GoogleGenAIOptions & { apiKey: string };
+
+/**
+ * Options for proxy mode (Vertex AI via backend)
+ */
+export type ProxyClientOptions = { proxyUrl: string };
+
+/**
+ * the options to initiate the client
+ * - ApiKeyClientOptions: Direct connection with API key
+ * - ProxyClientOptions: Connection via backend proxy (for Vertex AI)
+ */
+export type LiveClientOptions = ApiKeyClientOptions | ProxyClientOptions;
+
+/**
+ * Type guard to check if options are for proxy mode
+ */
+export function isProxyMode(options: LiveClientOptions): options is ProxyClientOptions {
+  return 'proxyUrl' in options;
+}
 
 /** log types */
 export type StreamingLog = {

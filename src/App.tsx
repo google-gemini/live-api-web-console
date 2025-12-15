@@ -23,14 +23,27 @@ import ControlTray from "./components/control-tray/ControlTray";
 import cn from "classnames";
 import { LiveClientOptions } from "./types";
 
-const API_KEY = process.env.REACT_APP_GEMINI_API_KEY as string;
-if (typeof API_KEY !== "string") {
-  throw new Error("set REACT_APP_GEMINI_API_KEY in .env");
-}
+// Support both direct API key mode and proxy mode (for Vertex AI)
+const PROXY_URL = process.env.REACT_APP_PROXY_URL;
+const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
-const apiOptions: LiveClientOptions = {
-  apiKey: API_KEY,
-};
+// Determine connection mode
+const apiOptions: LiveClientOptions = PROXY_URL
+  ? { proxyUrl: PROXY_URL }
+  : (() => {
+      if (typeof API_KEY !== "string") {
+        throw new Error(
+          "Set REACT_APP_GEMINI_API_KEY or REACT_APP_PROXY_URL in .env"
+        );
+      }
+      return { apiKey: API_KEY };
+    })();
+
+// Log connection mode
+console.log(
+  "Connection mode:",
+  PROXY_URL ? `Proxy (${PROXY_URL})` : "Direct API Key"
+);
 
 function App() {
   // this video reference is used for displaying the active stream, whether that is the webcam or screen capture

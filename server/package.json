@@ -1,0 +1,20 @@
+{
+  "name": "live-api-proxy-server",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --env-file=../.env run --watch src/index.ts",
+    "start": "bun run src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@fastify/websocket": "^11.1.0",
+    "@google/genai": "^1.0.0",
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "pino-pretty": "^13.1.3",
+    "typescript": "^5.6.3"
+  }
+}
