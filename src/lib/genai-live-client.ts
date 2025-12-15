@@ -30,7 +30,7 @@ import {
 
 import { EventEmitter } from "eventemitter3";
 import { difference } from "lodash";
-import { LiveClientOptions, StreamingLog } from "../types";
+import { ApiKeyClientOptions, StreamingLog } from "../types";
 import { base64ToArrayBuffer } from "./utils";
 
 /**
@@ -93,7 +93,7 @@ export class GenAILiveClient extends EventEmitter<LiveClientEventTypes> {
     return { ...this.config };
   }
 
-  constructor(options: LiveClientOptions) {
+  constructor(options: ApiKeyClientOptions) {
     super();
     this.client = new GoogleGenAI(options);
     this.send = this.send.bind(this);

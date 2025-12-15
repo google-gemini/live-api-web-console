@@ -16,14 +16,20 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GenAILiveClient } from "../lib/genai-live-client";
-import { LiveClientOptions } from "../types";
+import { GenAIProxyClient } from "../lib/genai-proxy-client";
+import { LiveClientOptions, isProxyMode, ApiKeyClientOptions } from "../types";
 import { AudioStreamer } from "../lib/audio-streamer";
 import { audioContext } from "../lib/utils";
 import VolMeterWorket from "../lib/worklets/vol-meter";
 import { LiveConnectConfig } from "@google/genai";
 
+/**
+ * Union type for both client types
+ */
+type LiveClient = GenAILiveClient | GenAIProxyClient;
+
 export type UseLiveAPIResults = {
-  client: GenAILiveClient;
+  client: LiveClient;
   setConfig: (config: LiveConnectConfig) => void;
   config: LiveConnectConfig;
   model: string;
@@ -35,7 +41,15 @@ export type UseLiveAPIResults = {
 };
 
 export function useLiveAPI(options: LiveClientOptions): UseLiveAPIResults {
-  const client = useMemo(() => new GenAILiveClient(options), [options]);
+  // Factory: choose client based on options type
+  const client = useMemo(() => {
+    if (isProxyMode(options)) {
+      console.log("Using proxy client:", options.proxyUrl);
+      return new GenAIProxyClient(options);
+    }
+    console.log("Using direct API client");
+    return new GenAILiveClient(options as ApiKeyClientOptions);
+  }, [options]);
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
 
   const [model, setModel] = useState<string>("models/gemini-2.0-flash-exp");
